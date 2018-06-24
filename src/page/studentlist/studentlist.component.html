@@ -1,0 +1,94 @@
+<nz-header style="background-color: #f0f2f5; margin-top: -24px; margin-left: -24px; margin-right: -24px; margin-bottom: 24px">
+  <span>当前课程：</span>
+  <nz-dropdown [nzTrigger]="'click'" [nzDisabled]=flog *ngIf="num > 0" >
+    <a nz-dropdown>
+      {{isSelectName}} <i class="anticon anticon-down"></i>
+    </a>
+    <ul nz-menu nzSelectable>
+      <li nz-menu-item *ngFor="let data of dataClass">
+        <a (click)="selectClass(data)">{{data.course_name}}</a>
+      </li>
+    </ul>
+  </nz-dropdown>
+  <label style="color: red" *ngIf="num == 0">请先添加课程</label>
+  <button nz-button nzType="primary" style="float: right; margin-top: 16px" (click)="showModal()" [disabled] = disable>{{butCont}}</button>
+</nz-header>
+
+
+
+<nz-table #basicTable [nzPageSize]="7"  [nzData]="dataSet" [nzScroll]= "{y:'340px'}">
+  <thead>
+  <tr>
+    <th nzWidth="50px">ID</th>
+    <th nzWidth="125px">开始时间</th>
+    <th nzWidth="125px">结束时间</th>
+    <th nzWidth="120px">ip地址</th>
+    <th nzWidth="100px">经度</th>
+    <th nzWidth="100px">纬度</th>
+    <th nzWidth="60px">应到</th>
+    <th nzWidth="60px">实到</th>
+    <th nzWidth="60px">未到</th>
+    <th nzWidth="100px">签到状态</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of basicTable.data">
+    <td>{{data.register_ID}}</td>
+    <td>{{data.start_time}}</td>
+    <td>{{data.end_time}}</td>
+    <td>{{data.ip}}</td>
+    <td>{{data.longitude}}</td>
+    <td>{{data.latitude}}</td>
+    <td>{{data.absence + data.register}}人</td>
+    <td>{{data.register}}人</td>
+    <td>{{data.absence}}人</td>
+    <td *ngIf="data.sign == 0">已签到</td>
+    <td *ngIf="data.sign == 1">正在签到</td>
+  </tr>
+  </tbody>
+</nz-table>
+
+<nz-modal [(nzVisible)]="isVisibleEnd" nzTitle="签到结果" nzWidth="800px" [nzFooter]="null" (nzOnCancel)="endhandleCancel()">
+  <nz-list [nzDataSource]="datashow" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+    <ng-template #item let-item>
+      <nz-list-item [nzContent]="nzContent">
+        <nz-list-item-meta
+          [nzTitle]="nzTitle"
+          [nzAvatar]="nzAvatar"
+          [nzDescription]="nzDescription">
+          <ng-template #nzAvatar>
+            <nz-avatar nzText="{{item.student_name}}" style="background-color:#028d96"></nz-avatar>
+          </ng-template>
+          <ng-template #nzTitle>
+            <a>{{item.student_name}}</a>
+          </ng-template>
+          <ng-template #nzDescription>
+            <label>学号: {{item.student_ID}}</label>
+            <label>专业: {{item.profession}}</label>
+          </ng-template>
+          <ng-template #nzContent>
+            <nz-switch [ngModel]="item.mark !== 0" nzCheckedChildren="已签到" nzUnCheckedChildren="未签到" [nzDisabled]="true"></nz-switch>
+          </ng-template>
+        </nz-list-item-meta>
+      </nz-list-item>
+    </ng-template>
+  </nz-list>
+  <nz-footer style="background-color: white" *ngIf="sum!=0">
+    <nz-pagination [(nzPageIndex)]="index" [nzTotal]="sum" [nzPageSize]="4" (nzPageIndexChange)="changeIndex()" style="float: right"></nz-pagination>
+  </nz-footer>
+  <div *ngIf="sum==0" style="text-align: center">
+    <br>
+    <label>暂无数据</label>
+    <br>
+  </div>
+</nz-modal>
+
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="选择当前详细位置" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" nzWidth="800px" nzOkText="下一步">
+  <nz-alert nzBanner nzMessage="请选择详细上课位置" *ngIf="showWarn"></nz-alert>
+  <div #container id="conntainerBaidu" class="maoContainer" style="height: 400px;width: 100%"></div>
+</nz-modal>
+<input type="text" id="lat" [hidden]="true">
+<input type="text" id="lng" [hidden]="true">
+<input type="text" id="maplat" [hidden]="true">
+<input type="text" id="maplng" [hidden]="true">

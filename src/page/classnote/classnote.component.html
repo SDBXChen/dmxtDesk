@@ -1,0 +1,57 @@
+<nz-header style="background-color: #f0f2f5; margin-top: -24px; margin-left: -24px; margin-right: -24px; margin-bottom: 24px">
+  <span>课程笔记</span>
+  <button nz-button nzType="primary" style="float: right; margin-top: 16px;" (click)="showNew()">添加笔记</button>
+</nz-header>
+<nz-list
+  [nzDataSource]="data"
+  [nzRenderItem]="item"
+  [nzItemLayout]="'vertical'"
+  [nzGrid]="{gutter: 16, xs: 48, sm: 24, md: 12, lg: 12, xl: 8 }">
+  <ng-template #item let-item>
+    <nz-list-item [nzContent]="nzContent"  [nzActions]="[moreAction,editAction,delAction]">
+      <ng-template #moreAction><a (click)="showMore(item)"><i class="anticon anticon-paper-clip" style="margin-right: 8px;" ></i> 详细</a></ng-template>
+      <ng-template #editAction><a (click)="showEdit(item)"><i class="anticon anticon-edit" style="margin-right: 8px;"></i> 修改</a></ng-template>
+      <ng-template #delAction><a (click)="showDel()"><i class="anticon anticon-delete" style="margin-right: 8px;"></i> 删除</a></ng-template>
+      <ng-template #nzContent>
+        <nz-card [nzTitle]="item.title" style="height: 180px">
+          <span *ngIf="item.content.length>60">{{item.content.substr(0,60)}}……</span>
+          <span *ngIf="item.content.length<=60">{{item.content}}</span>
+        </nz-card>
+      </ng-template>
+    </nz-list-item>
+  </ng-template>
+</nz-list>
+<nz-modal [(nzVisible)]="isMore" nzTitle="{{moreMessage.title}}" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <h2>日期</h2>
+  <p>{{moreMessage.date}}</p>
+  <h2>内容</h2>
+  <p>{{moreMessage.content}}</p>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="isEdit" nzTitle="{{mTitle}}" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <nz-list>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired >标题</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <input nz-input placeholder="标题" [(ngModel)]="moreMessage.title">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>日期</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <nz-date-picker nzValue="large" [(ngModel)]="moreMessage.date" (ngModelChange)="onChange($event)" nzShowTime style="width: 100%"></nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24">内容</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" >
+        <textarea nz-input rows="10" placeholder="write any thing" [(ngModel)]="moreMessage.content"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </nz-list>
+</nz-modal>
+
+
+<nz-footer style="background-color: white">
+  <nz-pagination [(nzPageIndex)]="index" [nzTotal]="sum" [nzPageSize]="6" (nzPageIndexChange)="changeIndex()" style="float: right"></nz-pagination>
+</nz-footer>

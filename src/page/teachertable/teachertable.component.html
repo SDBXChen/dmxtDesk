@@ -1,0 +1,63 @@
+<nz-header style="background-color: #f0f2f5; margin-top: -24px; margin-left: -24px; margin-right: -24px; margin-bottom: 24px">
+  <span>全班同学</span>
+  <button nz-button nzType="primary" style="float: right; margin-top: 16px" (click)="showNew()">添加课程</button>
+</nz-header>
+<nz-table #basicTable [nzPageSize]="6"  [nzData]="dataSet" [nzScroll]= "{y:'340px'}">
+  <thead>
+  <tr>
+    <th nzWidth="100px">课程号</th>
+    <th nzWidth="100px">课程名称</th>
+    <th nzWidth="100px">任课教师</th>
+    <th nzWidth="100px">上课时间</th>
+    <th nzWidth="100px">上课地点</th>
+    <th nzWidth="100px">操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of basicTable.data">
+    <td>{{data.course_number}}</td>
+    <td>{{data.course_name}}</td>
+    <td>{{teachername}}</td>
+    <td>{{data.class_time}}</td>
+    <td>{{data.class_location}}</td>
+    <td>
+      <a (click)="showEdit(data)">修改</a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <a (click)="showDel(data)">删除</a>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+
+<nz-modal [(nzVisible)]="isEdit" nzTitle="{{mTitle}}" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired >课程名称</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <input type="text" nz-input formControlName="classname" placeholder="请输入课程名称">
+        <nz-form-explain *ngIf="validateForm.get('classname').dirty && validateForm.get('classname').errors">请输入课程名称!</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>任课教师</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <input type="text" nz-input formControlName="classteacher" placeholder="请输入任课教师" disabled>
+        <nz-form-explain *ngIf="validateForm.get('classteacher').dirty && validateForm.get('classteacher').errors">请输入任课教师!</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>上课时间</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <input type="text" nz-input formControlName="classtime" placeholder="请输入上课时间">
+        <nz-form-explain *ngIf="validateForm.get('classtime').dirty && validateForm.get('classtime').errors">请输入上课时间!</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>上课地点</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <input type="text" nz-input formControlName="classlocal" placeholder="请输入上课地点">
+        <nz-form-explain *ngIf="validateForm.get('classlocal').dirty && validateForm.get('classlocal').errors">请输入上课地点!</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>

@@ -1,0 +1,208 @@
+<div id="register">
+  <div id="nzStep">
+    <nz-steps [nzCurrent]="currentPage">
+      <nz-step nzTitle="注册"></nz-step>
+      <nz-step nzTitle="完善信息"></nz-step>
+      <nz-step nzTitle="完成"></nz-step>
+    </nz-steps>
+  </div>
+
+  <div class="steps-content">
+    <h1>REGISTER</h1>
+    <form nz-form [formGroup]="validateForm1" (ngSubmit)="submitForm()" *ngIf="currentPage == 0">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>
+          <span>
+            用户名
+            <nz-tooltip nzTitle="起一个个性化名字">
+              <i nz-tooltip class="anticon anticon-question-circle-o"></i>
+            </nz-tooltip>
+          </span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
+          <input nz-input id="nickname" formControlName="nickname">
+          <nz-form-explain *ngIf="validateForm1.get('nickname').dirty && validateForm1.get('nickname').errors || validateForm1.get('nickname').pending ">
+            <ng-container *ngIf="validateForm1.get('nickname').hasError('required')">
+              请输入用户名!
+            </ng-container>
+            <ng-container *ngIf="validateForm1.get('nickname').hasError('duplicated')">
+              用户名已存在!
+            </ng-container>
+            <ng-container *ngIf="validateForm1.get('nickname').pending">
+              验证中...
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>密码</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input type="password" id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()">
+          <nz-form-explain *ngIf="validateForm1.get('password').dirty && validateForm1.get('password').errors">请输入密码!</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>确认密码</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input type="password" formControlName="checkPassword" id="checkPassword">
+          <nz-form-explain *ngIf="validateForm1.get('checkPassword').dirty && validateForm1.get('checkPassword').errors">
+            <ng-container *ngIf="validateForm1.get('checkPassword').hasError('required')">
+              请确认你的密码!
+            </ng-container>
+            <ng-container *ngIf="validateForm1.get('checkPassword').hasError('confirm')">
+              你输入的两次密码不一致!
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired>手机号</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
+          <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+            <ng-template #addOnBeforeTemplate>
+              <nz-select formControlName="phoneNumberPrefix" style="width: 70px;">
+                <nz-option nzLabel="+86" nzValue="+86"></nz-option>
+                <nz-option nzLabel="+87" nzValue="+87"></nz-option>
+              </nz-select>
+            </ng-template>
+            <input formControlName="phoneNumber" id="'phoneNumber'" nz-input>
+          </nz-input-group>
+          <nz-form-explain *ngIf="validateForm1.get('phoneNumber').dirty && validateForm1.get('phoneNumber').errors || validateForm1.get('phoneNumber').pending ">
+            <ng-container *ngIf="validateForm1.get('phoneNumber').hasError('required')">
+              <label style="color: red">请输入正确手机号码!</label>
+            </ng-container>
+            <ng-container *ngIf="validateForm1.get('phoneNumber').hasError('duplicated')">
+              <label style="color: red">手机号已注册!</label>
+            </ng-container>
+            <ng-container *ngIf="validateForm1.get('phoneNumber').pending">
+              <label style="color: red">验证中...</label>
+            </ng-container>
+          </nz-form-explain>
+          <!--<nz-form-explain *ngIf="validateForm1.get('phoneNumber').dirty && validateForm1.get('phoneNumber').errors">请输入你的手机号码!</nz-form-explain>-->
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item nz-row style="margin-bottom:8px;">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <label nz-checkbox formControlName="agree" style="float: left">
+            <span>我已阅读该 <a>协议</a></span>
+          </label>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item nz-row style="margin-bottom:8px;">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <a style="float: left" routerLink="/login">已有账号，去登录!</a>
+          <button style="float: right" nz-button nzType="primary">下一步</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+
+    <form nz-form [formGroup]="validateForm2" (ngSubmit)="submitMore()" *ngIf="currentPage == 1">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="school" nzRequired>
+          <span>
+            身份
+          </span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-select id="identify" formControlName="identify">
+            <nz-option [nzLabel]="'学生'" [nzValue]="'学生'"></nz-option>
+            <nz-option [nzLabel]="'教师'" [nzValue]="'教师'"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>
+          <span>
+            姓名
+          </span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="name" formControlName="name">
+          <nz-form-explain *ngIf="validateForm2.get('name').dirty && validateForm2.get('name').errors">请输入姓名!</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="school" nzRequired>
+          <span>
+            学校
+          </span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="school" formControlName="school">
+          <nz-form-explain *ngIf="validateForm2.get('school').dirty && validateForm2.get('school').errors">请输入学校!</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="yard" nzRequired>
+          <span>
+            学院
+          </span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="yard" formControlName="yard">
+          <nz-form-explain *ngIf="validateForm2.get('yard').dirty && validateForm2.get('yard').errors">请输入学院!</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="validateForm2.get('identify').value == '学生'">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="major" nzRequired>
+          <span>
+            专业
+          </span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="major" formControlName="major">
+          <nz-form-explain *ngIf="validateForm2.get('major').dirty && validateForm2.get('major').errors">请输入专业!</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="validateForm2.get('identify').value == '学生'">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="layer" nzRequired>
+          <span>
+            年级
+          </span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="layer" formControlName="layer">
+          <nz-form-explain *ngIf="validateForm2.get('layer').dirty && validateForm2.get('layer').errors">请输入年级!</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="validateForm2.get('identify').value == '学生'">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="stdnum" nzRequired>
+          <span>
+            学号
+          </span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="stdnum" formControlName="stdnum">
+          <nz-form-explain *ngIf="validateForm2.get('stdnum').dirty && validateForm2.get('stdnum').errors">请输入学号!</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="validateForm2.get('identify').value == '教师'">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="teanum" nzRequired>
+          <span>
+            工号
+          </span>
+        </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input id="teanum" formControlName="teanum">
+          <nz-form-explain *ngIf="validateForm2.get('teanum').dirty && validateForm2.get('teanum').errors">请输入工号!</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item nz-row style="margin-bottom:8px;">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+          <button style="float: right;margin-left: 5px" nz-button nzType="primary">下一步</button>
+          <button style="float: left" nz-button nzType="primary" (click)="prepage()">上一步</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+
+    <img src="assets/success.png" height="40%" width="40%" *ngIf="currentPage == 2">
+    <div class="button" *ngIf="currentPage == 2">
+      <span class="btn btn-large cancel" routerLink="/login">START</span>
+    </div>
+
+  </div>
+</div>
+
+
+
+

@@ -1,0 +1,39 @@
+<nz-header style="background-color: #f0f2f5; margin-top: -24px; margin-left: -24px; margin-right: -24px; margin-bottom: 24px">
+  <span>我的同学</span>
+</nz-header>
+<nz-list [nzDataSource]="datashow" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+  <ng-template #item let-item>
+    <nz-list-item>
+      <nz-list-item-meta
+        [nzTitle]="nzTitle"
+        [nzAvatar]="nzAvatar"
+        [nzDescription]="nzDescription">
+        <ng-template #nzAvatar>
+          <nz-avatar nzText="{{item.name}}" style="background-color:#028d96"></nz-avatar>
+        </ng-template>
+        <ng-template #nzTitle>
+          <a>{{item.name}}</a>
+        </ng-template>
+        <ng-template #nzDescription>
+          <label>{{item.student_ID}}</label>
+          <nz-divider nzType="vertical"></nz-divider>
+          <label>{{userMes.school}}</label>
+          <nz-divider nzType="vertical"></nz-divider>
+          <label>{{userMes.college}}</label>
+          <nz-divider nzType="vertical"></nz-divider>
+          <label>{{userMes.profession}}</label>
+          <nz-divider nzType="vertical"></nz-divider>
+          <label>{{userMes.grade}}</label>
+        </ng-template>
+      </nz-list-item-meta>
+    </nz-list-item>
+  </ng-template>
+</nz-list>
+<nz-footer style="background-color: white" *ngIf="sum>0">
+  <nz-pagination [(nzPageIndex)]="index" [nzTotal]="sum" [nzPageSize]="6" (nzPageIndexChange)="changeIndex()" style="float: right"></nz-pagination>
+</nz-footer>
+<div *ngIf="sum==0" style="text-align: center">
+  <br>
+  <label>暂无数据</label>
+  <br>
+</div>

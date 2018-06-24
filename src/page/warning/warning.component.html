@@ -1,0 +1,32 @@
+<nz-header style="background-color: #f0f2f5; margin-top: -24px; margin-left: -24px; margin-right: -24px; margin-bottom: 24px">
+  <span>旷课预警</span>
+</nz-header>
+<nz-table #basicTable [nzPageSize]="7"  [nzData]="dataSet" [nzScroll]= "{y:'340px'}">
+  <thead>
+  <tr>
+    <th nzWidth="100px"></th>
+    <th nzWidth="100px">课程名称</th>
+    <th nzWidth="100px">任课教师</th>
+    <th nzWidth="100px">上课时间</th>
+    <th nzWidth="100px">上课地点</th>
+    <th nzWidth="100px">已旷课数</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of basicTable.data">
+    <td>
+      <nz-tooltip nzTitle="距离挂科">
+        <nz-tooltip nzTitle="{{data.absence}}次/5次">
+          <nz-progress *ngIf="data.absence<=5" nz-tooltip nzPercent="{{data.absence * 20}}" nzSize="small" nzStatus="exception"></nz-progress>
+          <nz-progress *ngIf="data.absence>5" nz-tooltip nzPercent="100" nzSize="small" nzStatus="exception"></nz-progress>
+        </nz-tooltip>
+      </nz-tooltip>
+    </td>
+    <td>{{data.course.course_name}}</td>
+    <td>{{data.course.teacher.name}}</td>
+    <td>{{data.course.class_time}}</td>
+    <td>{{data.course.class_location}}</td>
+    <td>{{data.absence}}次</td>
+  </tr>
+  </tbody>
+</nz-table>

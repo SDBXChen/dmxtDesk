@@ -1,0 +1,47 @@
+<nz-header style="background-color: #f0f2f5; margin-top: -24px; margin-left: -24px; margin-right: -24px; margin-bottom: 24px">
+  <span>课程表</span>
+  <button nz-button nzType="primary" style="float: right; margin-top: 16px" (click)="showNew()">添加课程</button>
+</nz-header>
+<nz-table #basicTable [nzPageSize]="7"  [nzData]="dataSet" [nzScroll]= "{y:'340px'}">
+  <thead>
+  <tr>
+    <th nzWidth="100px">课程号</th>
+    <th nzWidth="100px">课程名称</th>
+    <th nzWidth="100px">任课教师</th>
+    <th nzWidth="100px">上课时间</th>
+    <th nzWidth="100px">上课地点</th>
+    <th nzWidth="100px">操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of basicTable.data">
+    <td>{{data.course.course_number}}</td>
+    <td>{{data.course.course_name}}</td>
+    <td>{{data.course.teacher.name}}</td>
+    <td>{{data.course.class_time}}</td>
+    <td>{{data.course.class_location}}</td>
+    <td>
+      <a (click)="showDel(data)">删除课程</a>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+<nz-modal [(nzVisible)]="isEdit" nzTitle="{{mTitle}}" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" nzOkText="添加课程">
+  <form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired >请选择课程</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <nz-cascader
+          formControlName="classname"
+          [(ngModel)]="values"
+          [nzLoadData]="loadData"
+          (ngModelChange)="onChanges($event)"
+          nzPlaceHolder="请选择">
+        </nz-cascader>
+        <!--<input type="text" nz-input formControlName="classname" placeholder="请输入课程名称">-->
+        <nz-form-explain *ngIf="validateForm.get('classname').dirty && validateForm.get('classname').errors">请输入课程名称!</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>
+

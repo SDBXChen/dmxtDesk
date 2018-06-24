@@ -1,0 +1,57 @@
+#login {
+
+  background: url("assets/back_login.jpg") repeat;
+  background-size: 100%;
+
+  position: fixed;
+  display: block;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  #logo{
+    margin: 3%;
+  }
+  .login-form {
+    max-width: 300px;
+    margin: auto;
+  }
+  #biaodan{
+    position: relative;
+    background: hsla(0,0%,100%,.4);
+    border-radius:5px;
+    margin: 10% 30%;
+    padding: 3%;
+    h1{
+      margin-bottom: 20px;
+      color: dodgerblue;
+      font-weight: bold;
+
+    }
+  }
+
+  #biaodan::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    z-index: -10;
+    -webkit-filter: blur(20px);
+    filter: blur(20px);
+    overflow: hidden;
+  }
+
+  .login-form-forgot {
+    float: right;
+  }
+
+  .login-form-button {
+    width: 100%;
+  }
+
+  .other{
+    margin-top: 5%;
+
+  }
+
+}

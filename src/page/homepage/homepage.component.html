@@ -1,0 +1,54 @@
+<nz-layout class="layout" style="height: 100%">
+  <nz-header style="height: 11%;">
+    <div class="logo">
+      <img src="assets/head.png" height="40px" style="float: left;margin-top: 20px">
+      <nz-popover nzTitle="{{currentUser['username']}}  欢迎你！" [nzPlacement]="'bottomRight'" style="float: right;margin-top: 9px">
+        <nz-avatar nzText="{{currentUser['username']}}" nz-popover style="background-color:#87d068"></nz-avatar>
+        <ng-template #nzTemplate>
+          <div *ngIf="show == 1">
+            <label>学号:{{data.student_ID}}</label>
+            <hr>
+            <label>学校:{{data.school}}</label>
+            <hr>
+            <label>学院:{{data.college}}</label>
+            <hr>
+            <label>专业:{{data.profession}}</label>
+            <hr>
+            <label>年级:{{data.grade}}</label>
+            <hr>
+            <a (click)="loginout()">退出登录</a>
+          </div>
+          <div *ngIf="show == 0">
+            <a (click)="loginout()">退出登录</a>
+          </div>
+        </ng-template>
+      </nz-popover>
+    </div>
+  </nz-header>
+
+  <nz-layout>
+    <nz-sider [nzWidth]="200">
+      <ul nz-menu [nzMode]="'inline'" style="height:100%" [nzTheme]="'dark'">
+        <li *ngFor="let item of dataset" nz-menu-item (click)="isSelect(item)">
+          <span>
+            <i class="{{item.icon}}"></i>
+            <span class="nav-text">{{item.title}}</span>
+          </span>
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-layout style="padding:0 24px 24px">
+      <nz-content style="background:#fff; padding: 24px; min-height: 280px;">
+        <app-classmates *ngIf="select == '全班同学'"></app-classmates>
+        <!--<app-classnote *ngIf="select == '课程笔记'"></app-classnote>-->
+        <app-classtable *ngIf="select == '课程表'"></app-classtable>
+        <app-warning *ngIf="select == '旷课预警'"></app-warning>
+        <app-teachertable *ngIf="select == '教师课程'"></app-teachertable>
+        <app-studentlist *ngIf="select == '学生签到'"></app-studentlist>
+        <app-studentmes *ngIf="select == '学生列表'"></app-studentmes>
+        <app-stdregister *ngIf="select == '签到'"></app-stdregister>
+      </nz-content>
+      <nz-footer style="text-align: center;">618 Design ©2018 Implement By ChenYuhan</nz-footer>
+    </nz-layout>
+  </nz-layout>
+</nz-layout>

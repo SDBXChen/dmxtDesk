@@ -1,0 +1,41 @@
+<nz-header style="background-color: #f0f2f5; margin-top: -24px; margin-left: -24px; margin-right: -24px; margin-bottom: 24px">
+  <span>选择课程：</span>
+  <nz-dropdown *ngIf="num > 0" [nzTrigger]="'click'">
+    <a nz-dropdown>
+      {{isSelectName}} <i class="anticon anticon-down"></i>
+    </a>
+    <ul nz-menu nzSelectable>
+      <li nz-menu-item *ngFor="let data of dataClass">
+        <a (click)="selectClass(data)">{{data.course_name}}</a>
+      </li>
+    </ul>
+  </nz-dropdown>
+  <label style="color: red" *ngIf="num == 0">请先添加课程</label>
+</nz-header>
+
+
+<nz-table #basicTable [nzPageSize]="7"  [nzData]="dataSet" [nzScroll]= "{y:'340px'}">
+  <thead>
+  <tr>
+    <th nzWidth="100px"></th>
+    <th nzWidth="100px">学生学号</th>
+    <th nzWidth="100px">学生姓名</th>
+    <th nzWidth="100px">学生专业</th>
+    <th nzWidth="100px">已旷课数</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of basicTable.data">
+    <td>
+      <nz-tooltip nzTitle="{{data.absence}}次/5次">
+        <nz-progress *ngIf="data.absence<=5" nz-tooltip nzPercent="{{data.absence * 20}}" nzSize="small" nzStatus="exception"></nz-progress>
+        <nz-progress *ngIf="data.absence>5" nz-tooltip nzPercent="100" nzSize="small" nzStatus="exception"></nz-progress>
+      </nz-tooltip>
+    </td>
+    <td>{{data.student.student_ID}}</td>
+    <td>{{data.student.name}}</td>
+    <td>{{data.student.profession}}</td>
+    <td>{{data.absence}}次</td>
+  </tr>
+  </tbody>
+</nz-table>
